@@ -1,5 +1,17 @@
 # DuckPet
 
+![DuckPet overview](docs/assets/duckpet-info.png)
+
+<p align="center">
+  <img alt="Windows 11" src="https://img.shields.io/badge/Windows-11-0078D4?style=for-the-badge&logo=windows&logoColor=white">
+  <img alt="Tauri 2" src="https://img.shields.io/badge/Tauri-2.0-24C8DB?style=for-the-badge&logo=tauri&logoColor=white">
+  <img alt="React" src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=0B1220">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+  <img alt="Rust" src="https://img.shields.io/badge/Rust-Stable-B7410E?style=for-the-badge&logo=rust&logoColor=white">
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-2EA44F?style=for-the-badge">
+  <img alt="Desktop Pet" src="https://img.shields.io/badge/Desktop%20Pet-Cozy%20%26%20Cute-F7B955?style=for-the-badge">
+</p>
+
 DuckPet is a Windows desktop pet app built with Tauri, React, TypeScript, and Rust. It displays animated pets on the desktop, lets you choose bundled pet definitions, and keeps the legacy eSheep-style XML animation format available for experimentation.
 
 This repository contains the modern Tauri app under `tauri-app/` plus legacy pet resources, manuals, tools, and migration notes.
