@@ -1,0 +1,25 @@
+[package]
+name = "tauri-app"
+version = "0.1.0"
+description = "DuckPet - A cross-platform desktop pet application powered by Tauri and React"
+authors = ["DuckPet contributors"]
+edition = "2021"
+
+[lib]
+name = "tauri_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "tauri-app"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+base64 = "0.22"
+quick-xml = { version = "0.38", features = ["serialize"] }
+serde = { version = "1", features = ["derive"] }
+tauri = { version = "2", features = ["tray-icon"] }
+windows = { version = "0.61", features = ["Win32_Foundation", "Win32_Graphics_Gdi", "Win32_Media_Multimedia", "Win32_UI_WindowsAndMessaging"] }
+zip = { version = "0.6", default-features = false, features = ["deflate"] }

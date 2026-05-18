@@ -1,0 +1,1462 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DuckPet Animal Island UI Preview</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;800&family=Zen+Maru+Gothic:wght@500;700&display=swap");
+
+      :root {
+        --mint: #19c8b9;
+        --mint-dark: #11a89b;
+        --mint-soft: #e6f9f6;
+        --leaf: #8ac68a;
+        --lime: #d1da49;
+        --yellow: #f7cd67;
+        --peach: #e18c6f;
+        --pink: #f8a6b2;
+        --red: #e05a5a;
+        --paper: rgb(247, 243, 223);
+        --paper-soft: #fbf7e8;
+        --cream: #f8f8f0;
+        --sand: #f0e8d8;
+        --text: #794f27;
+        --text-body: #725d42;
+        --muted: #9f927d;
+        --border: #9f927d;
+        --border-light: #c4b89e;
+        --shadow: rgba(61, 52, 40, 0.16);
+        --button-shadow: #bdaea0;
+        --input-shadow: #d4c9b4;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        margin: 0;
+        color: var(--text-body);
+        background:
+          radial-gradient(circle at 12% 10%, rgba(25, 200, 185, 0.18) 0 9rem, transparent 9.3rem),
+          radial-gradient(circle at 88% 16%, rgba(247, 205, 103, 0.22) 0 10rem, transparent 10.4rem),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.42) 25%, transparent 25%) 0 0 / 28px 28px,
+          linear-gradient(225deg, rgba(255, 255, 255, 0.3) 25%, transparent 25%) 0 0 / 28px 28px,
+          var(--cream);
+        font-family: Nunito, "Noto Sans SC", "Zen Maru Gothic", "Microsoft YaHei", sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+
+      .app-shell {
+        position: relative;
+        width: min(1180px, calc(100vw - 40px));
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: 26px 0 42px;
+      }
+
+      .app-shell::before,
+      .app-shell::after {
+        position: fixed;
+        z-index: -1;
+        border-radius: 999px;
+        content: "";
+      }
+
+      .app-shell::before {
+        right: -60px;
+        bottom: 54px;
+        width: 220px;
+        height: 220px;
+        background: rgba(138, 198, 138, 0.22);
+      }
+
+      .app-shell::after {
+        left: -70px;
+        bottom: -38px;
+        width: 240px;
+        height: 240px;
+        background: rgba(248, 166, 178, 0.18);
+      }
+
+      .topbar {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(190px, auto);
+        gap: 24px;
+        align-items: center;
+        margin-bottom: 16px;
+        padding: 24px 28px;
+        overflow: hidden;
+        border: 2px solid rgba(159, 146, 125, 0.42);
+        border-radius: 32px;
+        background:
+          radial-gradient(circle at 8% 102%, rgba(25, 200, 185, 0.24) 0 98px, transparent 100px),
+          radial-gradient(circle at 96% 0%, rgba(247, 205, 103, 0.2) 0 86px, transparent 88px),
+          rgba(255, 253, 241, 0.62);
+        box-shadow: 0 8px 24px rgba(61, 52, 40, 0.08);
+      }
+
+      .brand-line {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .leaf-badge,
+      .found-badge,
+      .mini-tag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid var(--border);
+        border-radius: 999px;
+        background: var(--paper);
+        box-shadow: 0 3px 0 var(--input-shadow);
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .leaf-badge {
+        min-height: 34px;
+        padding: 0 16px;
+        background: var(--mint-soft);
+      }
+
+      .mini-tag {
+        min-height: 28px;
+        padding: 0 12px;
+        border-color: rgba(159, 146, 125, 0.65);
+        box-shadow: 0 2px 0 var(--input-shadow);
+        font-size: 12px;
+      }
+
+      h1 {
+        max-width: 720px;
+        margin: 0;
+        color: var(--text);
+        font-size: clamp(38px, 5vw, 58px);
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .subtitle {
+        max-width: 680px;
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .clock-card {
+        min-width: 132px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        text-align: right;
+      }
+
+      .header-actions {
+        display: grid;
+        justify-items: end;
+      }
+
+      .language-toggle {
+        min-height: 34px;
+        margin-bottom: 0;
+        padding: 0 13px;
+        border: 2px solid var(--border);
+        border-radius: 999px;
+        background: #fffdf1;
+        box-shadow: 0 3px 0 var(--button-shadow);
+        color: var(--text);
+        font: inherit;
+        font-size: 12px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .clock-card span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .clock-card strong {
+        display: block;
+        margin-top: 3px;
+        color: var(--text);
+        font-size: 28px;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .notice {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 14px;
+        align-items: center;
+        margin-bottom: 18px;
+        padding: 14px 18px;
+        border: 2px dashed rgba(121, 79, 39, 0.38);
+        border-radius: 26px;
+        background: rgba(230, 249, 246, 0.86);
+        box-shadow: 0 4px 10px rgba(107, 92, 67, 0.18);
+      }
+
+      .notice-icon,
+      .tool-icon {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border: 2px solid var(--border);
+        border-radius: 50%;
+        background: #fff9d9;
+        box-shadow: 0 3px 0 var(--button-shadow);
+      }
+
+      .notice strong {
+        display: block;
+        color: var(--text);
+        font-size: 16px;
+      }
+
+      .notice span {
+        display: block;
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(290px, 370px) minmax(0, 1fr);
+        gap: 18px;
+      }
+
+      .left-rail,
+      .main-stack {
+        display: grid;
+        gap: 18px;
+        align-content: start;
+      }
+
+      .card {
+        position: relative;
+        padding: 22px;
+        border: 2px solid rgba(159, 146, 125, 0.84);
+        border-radius: 28px;
+        background: var(--paper);
+        box-shadow: 0 8px 24px var(--shadow), 0 4px 0 rgba(189, 174, 160, 0.7);
+      }
+
+      .card::before {
+        position: absolute;
+        top: 12px;
+        right: 18px;
+        width: 30px;
+        height: 16px;
+        border-radius: 999px 999px 8px 8px;
+        background: rgba(255, 255, 255, 0.55);
+        content: "";
+      }
+
+      .card-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      h2 {
+        margin: 0;
+        color: var(--text);
+        font-size: 21px;
+        line-height: 1.1;
+        letter-spacing: 0;
+      }
+
+      .found-badge {
+        min-height: 30px;
+        padding: 0 12px;
+        background: var(--yellow);
+        box-shadow: 0 3px 0 #d6ad4e;
+        font-size: 12px;
+      }
+
+      .select-shell {
+        position: relative;
+        margin-bottom: 16px;
+      }
+
+      label {
+        display: block;
+        margin: 0 0 7px 4px;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      select,
+      .input-like {
+        width: 100%;
+        min-height: 48px;
+        padding: 0 48px 0 18px;
+        border: 2.5px solid var(--border-light);
+        border-radius: 999px;
+        outline: none;
+        background: var(--paper-soft);
+        box-shadow: 0 3px 0 var(--input-shadow);
+        color: var(--text);
+        font: inherit;
+        font-size: 16px;
+        appearance: none;
+      }
+
+      .select-shell::after {
+        position: absolute;
+        right: 18px;
+        bottom: 13px;
+        color: var(--mint-dark);
+        content: "⌄";
+        font-size: 24px;
+        font-weight: 900;
+        pointer-events: none;
+      }
+
+      .pet-profile {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 14px;
+        align-items: center;
+        margin: 16px 0 20px;
+        padding: 14px;
+        border: 2px solid rgba(159, 146, 125, 0.42);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.42);
+      }
+
+      .pet-avatar {
+        display: grid;
+        place-items: center;
+        width: 68px;
+        height: 68px;
+        border: 2px solid var(--border);
+        border-radius: 22px;
+        background:
+          linear-gradient(45deg, rgba(255, 255, 255, 0.7) 25%, transparent 25%) 0 0 / 12px 12px,
+          #fff7da;
+        box-shadow: 0 4px 0 var(--button-shadow);
+      }
+
+      .pet-avatar img {
+        width: 42px;
+        height: 42px;
+        image-rendering: pixelated;
+      }
+
+      .pet-profile strong {
+        display: block;
+        color: var(--text);
+        font-size: 21px;
+        line-height: 1.1;
+      }
+
+      .pet-profile span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .meta-list,
+      .runtime-list {
+        display: grid;
+        gap: 11px;
+        margin: 0;
+      }
+
+      .meta-row,
+      .runtime-row {
+        display: grid;
+        gap: 3px;
+      }
+
+      .meta-inline {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .meta-inline .meta-row {
+        min-width: 0;
+        padding: 9px 10px;
+        border: 2px solid rgba(159, 146, 125, 0.34);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .metric-inline {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .metric-inline .runtime-row {
+        min-width: 0;
+        padding: 9px 10px;
+        border: 2px solid rgba(159, 146, 125, 0.34);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      dt {
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      dd {
+        min-width: 0;
+        margin: 0;
+        color: var(--text-body);
+        font-size: 15px;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+      }
+
+      .controls-card {
+        background: #f9f4d8;
+      }
+
+      .action-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0 16px;
+        border: 2px solid var(--border);
+        border-radius: 999px;
+        background: var(--paper-soft);
+        box-shadow: 0 5px 0 var(--button-shadow);
+        color: var(--text);
+        font: inherit;
+        font-size: 15px;
+        font-weight: 900;
+        text-decoration: none;
+        cursor: default;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .button.primary {
+        border-color: #0f8f84;
+        background: var(--mint);
+        box-shadow: 0 5px 0 var(--mint-dark);
+        color: #ffffff;
+      }
+
+      .button.warning {
+        background: var(--yellow);
+        box-shadow: 0 5px 0 #d6ad4e;
+      }
+
+      .button.danger {
+        border-color: #c94444;
+        background: var(--red);
+        box-shadow: 0 5px 0 #b33c3c;
+        color: #ffffff;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 0 var(--button-shadow);
+      }
+
+      .button.primary:hover {
+        box-shadow: 0 6px 0 var(--mint-dark);
+      }
+
+      .button.danger:hover {
+        box-shadow: 0 6px 0 #b33c3c;
+      }
+
+      .button.is-hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 0 var(--button-shadow);
+      }
+
+      .button.primary.is-hover {
+        box-shadow: 0 6px 0 var(--mint-dark);
+      }
+
+      .button.is-pressed {
+        transform: translateY(4px);
+        box-shadow: 0 1px 0 var(--button-shadow);
+      }
+
+      .button.primary.is-pressed {
+        box-shadow: 0 1px 0 var(--mint-dark);
+      }
+
+      .button.is-disabled {
+        border-color: rgba(159, 146, 125, 0.45);
+        background: #e7e1d2;
+        box-shadow: 0 3px 0 #cfc3ad;
+        color: rgba(121, 79, 39, 0.48);
+        cursor: not-allowed;
+        filter: saturate(0.7);
+      }
+
+      .button.danger.is-disabled {
+        border-color: rgba(201, 68, 68, 0.42);
+        background: #e7b6ad;
+        box-shadow: 0 3px 0 #c9968f;
+        color: rgba(255, 255, 255, 0.76);
+      }
+
+      .button.is-loading {
+        gap: 9px;
+        cursor: wait;
+      }
+
+      .button.is-loading::before {
+        width: 14px;
+        height: 14px;
+        border: 3px solid rgba(255, 255, 255, 0.55);
+        border-top-color: #ffffff;
+        border-radius: 50%;
+        content: "";
+        animation: spin 0.8s linear infinite;
+      }
+
+      .button.warning.is-loading::before,
+      .button.is-loading:not(.primary)::before {
+        border-color: rgba(121, 79, 39, 0.24);
+        border-top-color: var(--text);
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .toggle-stack {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 12px 14px;
+        border: 2px solid rgba(159, 146, 125, 0.42);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.34);
+      }
+
+      .toggle-row span {
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .switch {
+        position: relative;
+        width: 62px;
+        height: 34px;
+        flex: 0 0 auto;
+        border: 2px solid #5a9e1e;
+        border-radius: 999px;
+        background: #6fba2c;
+        box-shadow: 0 3px 0 #5a9e1e;
+      }
+
+      .switch::after {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #fffdf1;
+        box-shadow: 0 2px 4px rgba(61, 52, 40, 0.22);
+        content: "";
+      }
+
+      .switch.off {
+        border-color: var(--border-light);
+        background: #ece8dc;
+        box-shadow: 0 3px 0 var(--input-shadow);
+      }
+
+      .switch.off::after {
+        right: auto;
+        left: 4px;
+      }
+
+      .instance-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .instance-pill {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: center;
+        min-height: 48px;
+        padding: 8px 14px 8px 10px;
+        border: 2px solid rgba(159, 146, 125, 0.6);
+        border-radius: 999px;
+        background: var(--paper-soft);
+        box-shadow: 0 3px 0 var(--input-shadow);
+      }
+
+      .instance-pill.selected {
+        border-color: var(--mint-dark);
+        background: var(--mint-soft);
+      }
+
+      .dot {
+        width: 14px;
+        height: 14px;
+        border: 2px solid #fff9d9;
+        border-radius: 50%;
+        background: var(--leaf);
+        box-shadow: 0 0 0 2px var(--border);
+      }
+
+      .instance-pill strong {
+        color: var(--text);
+      }
+
+      .instance-pill span {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .hero-card {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 250px;
+        gap: 34px;
+        min-height: 300px;
+        padding: 28px 30px;
+        overflow: hidden;
+        background:
+          linear-gradient(145deg, rgba(230, 249, 246, 0.92), rgba(247, 243, 223, 0.92)),
+          var(--paper);
+      }
+
+      .hero-card::after {
+        position: absolute;
+        right: -34px;
+        bottom: -38px;
+        width: 280px;
+        height: 142px;
+        border-radius: 50% 50% 0 0;
+        background: #8ac68a;
+        box-shadow: inset 0 12px 0 rgba(255, 255, 255, 0.18);
+        content: "";
+      }
+
+      .hero-copy {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 22px;
+        min-width: 0;
+      }
+
+      .hero-copy h2 {
+        max-width: 560px;
+        margin: 0;
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1.03;
+      }
+
+      .hero-copy p {
+        max-width: 580px;
+        margin: 14px 0 22px;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 2px;
+      }
+
+      .pet-stage {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+        min-height: 244px;
+      }
+
+      .pet-bubble {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 170px;
+        height: 170px;
+        border: 2px solid rgba(121, 79, 39, 0.55);
+        border-radius: 44% 56% 50% 50%;
+        background: rgba(255, 253, 241, 0.9);
+        box-shadow: 0 14px 28px rgba(61, 52, 40, 0.18), 0 5px 0 var(--button-shadow);
+      }
+
+      .pet-bubble img {
+        width: 64px;
+        height: 64px;
+        image-rendering: pixelated;
+        transform: scale(1.8);
+      }
+
+      .bubble-label {
+        position: absolute;
+        right: 4px;
+        bottom: -8px;
+        padding: 6px 12px;
+        border: 2px solid var(--border);
+        border-radius: 999px;
+        background: var(--yellow);
+        box-shadow: 0 3px 0 #d6ad4e;
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+        gap: 18px;
+      }
+
+      .sprite-strip {
+        position: relative;
+        min-height: 128px;
+        margin-top: 14px;
+        overflow: hidden;
+        border: 2px solid rgba(159, 146, 125, 0.6);
+        border-radius: 24px;
+        background:
+          linear-gradient(45deg, rgba(240, 232, 216, 0.9) 25%, transparent 25%) 0 0 / 18px 18px,
+          linear-gradient(-45deg, rgba(240, 232, 216, 0.9) 25%, transparent 25%) 0 9px / 18px 18px,
+          #fffdf1;
+      }
+
+      .sprite-runner {
+        display: grid;
+        grid-template-columns: repeat(12, 42px);
+        gap: 8px;
+        align-items: center;
+        width: max-content;
+        padding: 20px;
+      }
+
+      .sprite-cell {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.65);
+      }
+
+      .sprite-cell img {
+        width: 34px;
+        height: 34px;
+        image-rendering: pixelated;
+      }
+
+      .platform-card {
+        background: #f4edda;
+      }
+
+      .monitor {
+        margin-top: 12px;
+        padding: 13px 15px;
+        border: 2px solid rgba(159, 146, 125, 0.44);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.34);
+      }
+
+      .monitor strong {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--text);
+      }
+
+      .monitor span {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+      }
+
+      .tool-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .button-state-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .button-state {
+        display: grid;
+        gap: 9px;
+        align-content: start;
+        min-width: 0;
+      }
+
+      .button-state small {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .tool-tile {
+        display: grid;
+        gap: 9px;
+        justify-items: center;
+        min-height: 116px;
+        padding: 15px 10px 13px;
+        border: 2px solid rgba(159, 146, 125, 0.62);
+        border-radius: 24px;
+        background: var(--paper-soft);
+        box-shadow: 0 4px 0 rgba(189, 174, 160, 0.76);
+        text-align: center;
+      }
+
+      .tool-tile:nth-child(2) {
+        background: #f8e8ec;
+      }
+
+      .tool-tile:nth-child(3) {
+        background: #e7f6db;
+      }
+
+      .tool-tile:nth-child(4) {
+        background: #e5f2f8;
+      }
+
+      .tool-icon {
+        font-size: 18px;
+      }
+
+      .tool-tile strong {
+        color: var(--text);
+        font-size: 14px;
+        line-height: 1.15;
+      }
+
+      .tool-tile span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .footer-wave {
+        height: 70px;
+        margin-top: 24px;
+        border-radius: 32px 32px 0 0;
+        background:
+          radial-gradient(circle at 10% 105%, #82d5bb 0 38px, transparent 39px),
+          radial-gradient(circle at 30% 105%, #82d5bb 0 42px, transparent 43px),
+          radial-gradient(circle at 54% 105%, #82d5bb 0 36px, transparent 37px),
+          radial-gradient(circle at 78% 105%, #82d5bb 0 44px, transparent 45px),
+          radial-gradient(circle at 94% 105%, #82d5bb 0 34px, transparent 35px);
+        opacity: 0.85;
+      }
+
+      @media (max-width: 920px) {
+        .layout,
+        .hero-card,
+        .two-col,
+        .topbar {
+          grid-template-columns: 1fr;
+        }
+
+        .clock-card {
+          width: 100%;
+          text-align: left;
+        }
+
+        .header-actions {
+          justify-items: stretch;
+        }
+
+        .language-toggle {
+          justify-self: start;
+        }
+
+        .tool-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .button-state-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 560px) {
+        .app-shell {
+          width: min(100% - 24px, 1180px);
+          padding-top: 16px;
+        }
+
+        .notice {
+          grid-template-columns: auto minmax(0, 1fr);
+        }
+
+        .notice .mini-tag {
+          grid-column: 1 / -1;
+          justify-self: start;
+        }
+
+        .card {
+          padding: 18px;
+          border-radius: 24px;
+        }
+
+        .action-grid,
+        .tool-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .button-state-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .meta-inline {
+          grid-template-columns: 1fr;
+        }
+
+        .metric-inline {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <div class="brand-line">
+            <span class="leaf-badge" data-i18n="brand">DuckPet 岛屿管理所</span>
+            <span class="mini-tag" data-i18n="controlTitle">Windows 11 宠物控制台</span>
+            <button class="language-toggle" id="language-toggle" type="button" data-i18n="languageButton">English</button>
+          </div>
+          <h1 data-i18n="headline">好萌鸭</h1>
+          <p class="subtitle" data-i18n="subtitle">把桌面宠物搬进你的小岛❤</p>
+        </div>
+        <div class="header-actions">
+          <aside class="clock-card" aria-label="preview clock">
+            <span data-i18n="previewDate">周一 · 5月18日</span>
+            <strong>09:42</strong>
+          </aside>
+        </div>
+      </header>
+
+      <section class="notice" aria-label="runtime notice">
+        <div class="notice-icon">✓</div>
+        <div>
+          <strong data-i18n="noticeTitle">已生成另一个宠物运行实例。</strong>
+          <span data-i18n="noticeBody">当前已有 2 / 4 个 eSheep 实例在桌面活动，窗口碰撞已开启。</span>
+        </div>
+        <span class="mini-tag" data-i18n="running">运行中</span>
+      </section>
+
+      <section class="layout">
+        <aside class="left-rail">
+          <article class="card">
+            <div class="card-title">
+              <h2 data-i18n="selectResident">选择居民</h2>
+              <span class="found-badge" data-i18n="foundCount">22 个可用</span>
+            </div>
+            <div class="select-shell">
+              <label for="pet-select" data-i18n="petLabel">宠物</label>
+              <select id="pet-select">
+                <option>eSheep</option>
+                <option>bbunny</option>
+                <option>blue_ham_ham</option>
+                <option>pink_fox</option>
+              </select>
+            </div>
+
+            <div class="pet-profile">
+              <div class="pet-avatar">
+                <img src="Pets/esheep64/icon.png" alt="" />
+              </div>
+              <div>
+                <strong>eSheep</strong>
+                <span>eSheep 64bit · Adriano</span>
+              </div>
+            </div>
+
+            <dl class="meta-list">
+              <div class="meta-row">
+                <dt data-i18n="xmlPath">XML 路径</dt>
+                <dd>\\?\D:\ProgramFiles\DuckPet\Pets\esheep64\animations.xml</dd>
+              </div>
+              <div class="meta-inline">
+                <div class="meta-row">
+                  <dt data-i18n="version">版本</dt>
+                  <dd>1.8</dd>
+                </div>
+                <div class="meta-row">
+                  <dt data-i18n="animations">动画</dt>
+                  <dd>54</dd>
+                </div>
+                <div class="meta-row">
+                  <dt data-i18n="sounds">声音</dt>
+                  <dd>0</dd>
+                </div>
+              </div>
+            </dl>
+          </article>
+
+          <article class="card controls-card">
+            <div class="card-title">
+              <h2 data-i18n="runtimeControl">运行控制</h2>
+              <span class="found-badge">2 / 4</span>
+            </div>
+            <div class="action-grid">
+              <span class="button primary" data-i18n="start">启动</span>
+              <span class="button" data-i18n="pause">暂停</span>
+              <span class="button warning" data-i18n="resume">继续</span>
+              <span class="button" data-i18n="spawn">再生成一个</span>
+              <span class="button danger" data-i18n="close">关闭</span>
+              <span class="button" data-i18n="mute">静音</span>
+            </div>
+
+            <div class="toggle-stack">
+              <div class="toggle-row">
+                <span data-i18n="windowCollision">窗口碰撞</span>
+                <i class="switch" aria-hidden="true"></i>
+              </div>
+              <div class="toggle-row">
+                <span data-i18n="clickThrough">宠物点击穿透</span>
+                <i class="switch off" aria-hidden="true"></i>
+              </div>
+            </div>
+
+            <div class="instance-list">
+              <div class="instance-pill selected">
+                <i class="dot" aria-hidden="true"></i>
+                <strong>pet_1</strong>
+                <span data-i18n="open">已打开</span>
+              </div>
+              <div class="instance-pill">
+                <i class="dot" aria-hidden="true"></i>
+                <strong>pet_2</strong>
+                <span data-i18n="open">已打开</span>
+              </div>
+            </div>
+          </article>
+        </aside>
+
+        <section class="main-stack">
+          <article class="card hero-card">
+            <div class="hero-copy">
+              <span class="mini-tag" data-i18n="currentResident">当前居民 · eSheep</span>
+              <h2 data-i18n="heroTitle">桌面小羊正在散步，下一步可以暂停、复制或静音。</h2>
+              <div class="hero-actions">
+                <span class="button primary" data-i18n="summonDesktop">召唤到桌面</span>
+                <span class="button" data-i18n="viewAnimation">查看动画</span>
+                <span class="button danger" data-i18n="closeAll">全部关闭</span>
+              </div>
+            </div>
+            <div class="pet-stage" aria-hidden="true">
+              <div class="pet-bubble">
+                <img src="Pets/esheep64/icon.png" alt="" />
+                <span class="bubble-label">walk #17</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-title">
+              <h2 data-i18n="buttonStates">按钮状态</h2>
+              <span class="found-badge" data-i18n="sixStates">6 种状态</span>
+            </div>
+            <div class="button-state-grid">
+              <div class="button-state">
+                <small data-i18n="stateDefault">默认</small>
+                <span class="button primary" data-i18n="start">启动</span>
+              </div>
+              <div class="button-state">
+                <small data-i18n="stateHover">悬停</small>
+                <span class="button primary is-hover" data-i18n="summonDesktop">召唤到桌面</span>
+              </div>
+              <div class="button-state">
+                <small data-i18n="statePressed">按下</small>
+                <span class="button primary is-pressed" data-i18n="spawn">再生成一个</span>
+              </div>
+              <div class="button-state">
+                <small data-i18n="stateWorking">处理中</small>
+                <span class="button warning is-loading" data-i18n="loading">加载中</span>
+              </div>
+              <div class="button-state">
+                <small data-i18n="stateDisabled">禁用</small>
+                <span class="button is-disabled" data-i18n="resume">继续</span>
+              </div>
+              <div class="button-state">
+                <small data-i18n="stateDangerDisabled">危险禁用</small>
+                <span class="button danger is-disabled" data-i18n="closeAll">全部关闭</span>
+              </div>
+            </div>
+          </article>
+
+          <section class="two-col">
+            <article class="card">
+              <div class="card-title">
+                <h2 data-i18n="spriteSheet">精灵表</h2>
+                <span class="found-badge">16 × 11</span>
+              </div>
+              <dl class="runtime-list">
+                <div class="runtime-row">
+                  <dt data-i18n="tiles">图块</dt>
+                  <dd data-i18n="tilesValue">16 列 × 11 行，40×40px</dd>
+                </div>
+                <div class="runtime-row">
+                  <dt data-i18n="transparency">透明色</dt>
+                  <dd data-i18n="magenta">洋红</dd>
+                </div>
+                <div class="runtime-row">
+                  <dt data-i18n="spawns">生成点</dt>
+                  <dd>4</dd>
+                </div>
+              </dl>
+              <div class="sprite-strip" aria-hidden="true">
+                <div class="sprite-runner">
+                  <span class="sprite-cell"><img src="Pets/esheep64/icon.png" alt="" /></span>
+                  <span class="sprite-cell"><img src="Pets/bbunny/icon.png" alt="" /></span>
+                  <span class="sprite-cell"><img src="Pets/blue_ham_ham/icon.png" alt="" /></span>
+                  <span class="sprite-cell"><img src="Pets/mareep/icon.png" alt="" /></span>
+                  <span class="sprite-cell"><img src="Pets/neko/icon.png" alt="" /></span>
+                  <span class="sprite-cell"><img src="Pets/pingus/icon.png" alt="" /></span>
+                  <span class="sprite-cell"><img src="Pets/pikachu/icon.png" alt="" /></span>
+                  <span class="sprite-cell"><img src="Pets/fox/icon.png" alt="" /></span>
+                  <span class="sprite-cell"><img src="Pets/esheep64/icon.png" alt="" /></span>
+                  <span class="sprite-cell"><img src="Pets/blue_sheep/icon.png" alt="" /></span>
+                  <span class="sprite-cell"><img src="Pets/orange_sheep/icon.png" alt="" /></span>
+                  <span class="sprite-cell"><img src="Pets/pink_sheep/icon.png" alt="" /></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-title">
+                <h2 data-i18n="currentInstance">当前实例</h2>
+                <span class="found-badge">pet_1</span>
+              </div>
+              <dl class="runtime-list">
+                <div class="runtime-row">
+                  <dt data-i18n="currentAnimation">当前动画</dt>
+                  <dd>1 / walk</dd>
+                </div>
+                <div class="runtime-row">
+                  <dt data-i18n="frameIndex">帧序号</dt>
+                  <dd>2 (17 / 42)</dd>
+                </div>
+                <div class="runtime-row">
+                  <dt data-i18n="position">位置</dt>
+                  <dd>2639, 1944</dd>
+                </div>
+                <div class="runtime-row">
+                  <dt data-i18n="audio">音频</dt>
+                  <dd data-i18n="audioValue">未静音 · 没有声音错误</dd>
+                </div>
+              </dl>
+            </article>
+          </section>
+
+          <section class="two-col">
+            <article class="card platform-card">
+              <div class="card-title">
+                <h2 data-i18n="platformStatus">平台状态</h2>
+                <span class="found-badge">Windows</span>
+              </div>
+              <dl class="runtime-list metric-inline">
+                <div class="runtime-row">
+                  <dt data-i18n="primaryWorkArea">主工作区</dt>
+                  <dd>0,0 3120×1984</dd>
+                </div>
+                <div class="runtime-row">
+                  <dt data-i18n="taskbarEdge">任务栏边缘</dt>
+                  <dd data-i18n="bottom">底部</dd>
+                </div>
+                <div class="runtime-row">
+                  <dt data-i18n="fullscreenActive">全屏窗口活动</dt>
+                  <dd data-i18n="no">否</dd>
+                </div>
+                <div class="runtime-row">
+                  <dt data-i18n="windowCollisionShort">窗口碰撞</dt>
+                  <dd data-i18n="yes">是</dd>
+                </div>
+              </dl>
+              <div class="monitor">
+                <strong data-i18n="displayPrimary">\\.\DISPLAY1 主屏</strong>
+                <span data-i18n="displayOneBounds">边界 0,0 3120×2080</span>
+                <span data-i18n="displayOneWork">工作区 0,0 3120×1984</span>
+              </div>
+              <div class="monitor">
+                <strong>\\.\DISPLAY2</strong>
+                <span data-i18n="displayTwoBounds">边界 352,-1440 2560×1440</span>
+                <span data-i18n="displayTwoWork">工作区 352,-1440 2560×1392</span>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-title">
+                <h2 data-i18n="quickTools">快捷工具</h2>
+                <span class="found-badge" data-i18n="toolsCount">4 个工具</span>
+              </div>
+              <div class="tool-grid">
+                <div class="tool-tile">
+                  <i class="tool-icon">✦</i>
+                  <strong data-i18n="petCatalog">宠物图鉴</strong>
+                  <span data-i18n="foundCount">22 个可用</span>
+                </div>
+                <div class="tool-tile">
+                  <i class="tool-icon">♪</i>
+                  <strong data-i18n="sound">声音</strong>
+                  <span data-i18n="unmuted">未静音</span>
+                </div>
+                <div class="tool-tile">
+                  <i class="tool-icon">⌖</i>
+                  <strong data-i18n="collision">碰撞</strong>
+                  <span data-i18n="enabled">已启用</span>
+                </div>
+                <div class="tool-tile">
+                  <i class="tool-icon">↗</i>
+                  <strong data-i18n="window">窗口</strong>
+                  <span data-i18n="alwaysOnTop">始终置顶</span>
+                </div>
+              </div>
+            </article>
+          </section>
+        </section>
+      </section>
+
+      <div class="footer-wave" aria-hidden="true"></div>
+    </main>
+
+    <script>
+      const copy = {
+        zh: {
+          alwaysOnTop: "始终置顶",
+          animations: "动画",
+          audio: "音频",
+          audioValue: "未静音 · 没有声音错误",
+          bottom: "底部",
+          brand: "DuckPet 岛屿管理所",
+          buttonStates: "按钮状态",
+          clickThrough: "宠物点击穿透",
+          close: "关闭",
+          closeAll: "全部关闭",
+          collision: "碰撞",
+          controlTitle: "Windows 11 宠物控制台",
+          currentAnimation: "当前动画",
+          currentInstance: "当前实例",
+          currentResident: "当前居民 · eSheep",
+          displayOneBounds: "边界 0,0 3120×2080",
+          displayOneWork: "工作区 0,0 3120×1984",
+          displayPrimary: "\\\\.\\DISPLAY1 主屏",
+          displayTwoBounds: "边界 352,-1440 2560×1440",
+          displayTwoWork: "工作区 352,-1440 2560×1392",
+          enabled: "已启用",
+          foundCount: "22 个可用",
+          frameIndex: "帧序号",
+          fullscreenActive: "全屏窗口活动",
+          headline: "好萌鸭",
+          heroTitle: "桌面小羊正在散步，下一步可以暂停、复制或静音。",
+          languageButton: "English",
+          loading: "加载中",
+          magenta: "洋红",
+          mute: "静音",
+          no: "否",
+          noticeBody: "当前已有 2 / 4 个 eSheep 实例在桌面活动，窗口碰撞已开启。",
+          noticeTitle: "已生成另一个宠物运行实例。",
+          open: "已打开",
+          pause: "暂停",
+          petCatalog: "宠物图鉴",
+          petLabel: "宠物",
+          platformStatus: "平台状态",
+          position: "位置",
+          previewDate: "周一 · 5月18日",
+          primaryWorkArea: "主工作区",
+          quickTools: "快捷工具",
+          resume: "继续",
+          running: "运行中",
+          runtimeControl: "运行控制",
+          selectResident: "选择居民",
+          sound: "声音",
+          sounds: "声音",
+          sixStates: "6 种状态",
+          spawn: "再生成一个",
+          spawns: "生成点",
+          stateDangerDisabled: "危险禁用",
+          stateDefault: "默认",
+          stateDisabled: "禁用",
+          stateHover: "悬停",
+          statePressed: "按下",
+          stateWorking: "处理中",
+          spriteSheet: "精灵表",
+          start: "启动",
+          subtitle: "把桌面宠物搬进你的小岛❤",
+          summonDesktop: "召唤到桌面",
+          taskbarEdge: "任务栏边缘",
+          tiles: "图块",
+          tilesValue: "16 列 × 11 行，40×40px",
+          toolsCount: "4 个工具",
+          transparency: "透明色",
+          unmuted: "未静音",
+          version: "版本",
+          viewAnimation: "查看动画",
+          window: "窗口",
+          windowCollision: "窗口碰撞",
+          windowCollisionShort: "窗口碰撞",
+          xmlPath: "XML 路径",
+          yes: "是",
+        },
+        en: {
+          alwaysOnTop: "Always on top",
+          animations: "Animations",
+          audio: "Audio",
+          audioValue: "Unmuted · No sound errors",
+          bottom: "Bottom",
+          brand: "DuckPet Island Desk",
+          buttonStates: "Button States",
+          clickThrough: "Pet click-through",
+          close: "Close",
+          closeAll: "Close All",
+          collision: "Collision",
+          controlTitle: "Windows 11 Pet Control",
+          currentAnimation: "Current animation",
+          currentInstance: "Current Instance",
+          currentResident: "Current resident · eSheep",
+          displayOneBounds: "Bounds 0,0 3120×2080",
+          displayOneWork: "Work area 0,0 3120×1984",
+          displayPrimary: "\\\\.\\DISPLAY1 primary",
+          displayTwoBounds: "Bounds 352,-1440 2560×1440",
+          displayTwoWork: "Work area 352,-1440 2560×1392",
+          enabled: "Enabled",
+          foundCount: "22 found",
+          frameIndex: "Frame index",
+          fullscreenActive: "Fullscreen active",
+          headline: "DuckPet",
+          heroTitle: "The desktop sheep is walking. Pause, duplicate, or mute it next.",
+          languageButton: "中文",
+          loading: "Loading",
+          magenta: "Magenta",
+          mute: "Mute",
+          no: "No",
+          noticeBody: "2 / 4 eSheep instances are active on the desktop. Window collision is enabled.",
+          noticeTitle: "Another pet runtime spawned.",
+          open: "Open",
+          pause: "Pause",
+          petCatalog: "Pet Catalog",
+          petLabel: "Pet",
+          platformStatus: "Platform",
+          position: "Position",
+          previewDate: "Mon · May 18",
+          primaryWorkArea: "Primary work area",
+          quickTools: "Quick Tools",
+          resume: "Resume",
+          running: "Running",
+          runtimeControl: "Runtime",
+          selectResident: "Pet Selection",
+          sound: "Sound",
+          sounds: "Sounds",
+          sixStates: "6 states",
+          spawn: "Spawn Another",
+          spawns: "Spawns",
+          stateDangerDisabled: "Danger disabled",
+          stateDefault: "Default",
+          stateDisabled: "Disabled",
+          stateHover: "Hover",
+          statePressed: "Pressed",
+          stateWorking: "Working",
+          spriteSheet: "Sprite Sheet",
+          start: "Start",
+          subtitle: "Bring your desktop pets onto your own little island.",
+          summonDesktop: "Summon to Desktop",
+          taskbarEdge: "Taskbar edge",
+          tiles: "Tiles",
+          tilesValue: "16 columns × 11 rows, 40×40px",
+          toolsCount: "4 tools",
+          transparency: "Transparency",
+          unmuted: "Unmuted",
+          version: "Version",
+          viewAnimation: "View Animation",
+          window: "Window",
+          windowCollision: "Window collision",
+          windowCollisionShort: "Window collision",
+          xmlPath: "XML path",
+          yes: "Yes",
+        },
+      };
+
+      let currentLocale = "zh";
+      const toggle = document.getElementById("language-toggle");
+
+      function applyLocale(locale) {
+        currentLocale = locale;
+        document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
+        document.querySelectorAll("[data-i18n]").forEach((node) => {
+          const key = node.dataset.i18n;
+          if (key && copy[locale][key]) {
+            node.textContent = copy[locale][key];
+          }
+        });
+      }
+
+      toggle.addEventListener("click", () => {
+        applyLocale(currentLocale === "zh" ? "en" : "zh");
+      });
+
+      applyLocale(currentLocale);
+    </script>
+  </body>
+</html>

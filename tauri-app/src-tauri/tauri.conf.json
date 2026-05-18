@@ -1,0 +1,70 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "DuckPet",
+  "version": "0.1.0",
+  "identifier": "com.duckpet.desktop",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://127.0.0.1:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "settings",
+        "title": "DuckPet Settings",
+        "width": 900,
+        "height": 600,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": null,
+      "capabilities": [
+        {
+          "identifier": "duckpet-local-windows",
+          "description": "Allows DuckPet local settings and pet windows to create and control desktop pet webview windows.",
+          "local": true,
+          "windows": ["settings", "pet_*"],
+          "permissions": [
+            "core:default",
+            "core:webview:allow-create-webview-window",
+            "core:window:allow-create",
+            "core:window:allow-show",
+            "core:window:allow-close",
+            "core:window:allow-destroy",
+            "core:window:allow-set-always-on-top",
+            "core:window:allow-set-focusable",
+            "core:window:allow-set-ignore-cursor-events",
+            "core:window:allow-set-shadow",
+            "core:window:allow-set-skip-taskbar",
+            "core:window:allow-start-dragging"
+          ]
+        }
+      ]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "useLocalToolsDir": true,
+    "publisher": "DuckPet contributors",
+    "icon": ["icons/icon.ico"],
+    "resources": {
+      "../../Pets": "Pets"
+    },
+    "windows": {
+      "webviewInstallMode": {
+        "type": "skip"
+      },
+      "nsis": {
+        "installerIcon": "icons/icon.ico",
+        "uninstallerIcon": "icons/icon.ico",
+        "installMode": "currentUser",
+        "languages": ["English"],
+        "displayLanguageSelector": false
+      }
+    }
+  }
+}
