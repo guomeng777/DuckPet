@@ -6,6 +6,7 @@ mod windows;
 
 use tauri::menu::MenuBuilder;
 use tauri::tray::TrayIconBuilder;
+use tauri::Manager;
 
 const TRAY_SHOW_SETTINGS_ID: &str = "show_settings";
 const TRAY_QUIT_ID: &str = "quit";
@@ -50,11 +51,19 @@ pub fn run() {
         })
         .on_window_event(|window, event| {
             if window.label() == windows::SETTINGS_WINDOW_LABEL {
-                if let tauri::WindowEvent::CloseRequested { api, .. } = event {
-                    api.prevent_close();
-                    if let Err(error) = window.hide() {
-                        eprintln!("failed to hide settings window: {error}");
+                match event {
+                    tauri::WindowEvent::CloseRequested { api, .. } => {
+                        api.prevent_close();
+                        if let Err(error) = window.hide() {
+                            eprintln!("failed to hide settings window: {error}");
+                        }
                     }
+                    tauri::WindowEvent::Focused(true) => {
+                        if let Err(error) = windows::raise_pet_windows(&window.app_handle()) {
+                            eprintln!("failed to raise pet windows after settings focus: {error}");
+                        }
+                    }
+                    _ => {}
                 }
             }
         })

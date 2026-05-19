@@ -660,9 +660,7 @@ fn present_pet_frame(
                     placement.window_y,
                 ))
                 .map_err(|error| error.to_string())?;
-            window
-                .set_always_on_top(true)
-                .map_err(|error| error.to_string())?;
+            windows::raise_pet_window(&window)?;
             frame.x = placement.frame_x;
             frame.y = placement.frame_y;
             frame.width = placement.frame_width;
